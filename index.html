@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title> Dynamic clock </title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+            }
+            
+            html {
+                position: relative;
+                width: 100vw;
+            }
+            
+            html:after {
+                content: "";
+                background: #018D66 url("01.jpg"); 
+                background-size: cover;
+                opacity: 0.8;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                top: 0;
+                position: absolute;
+                z-index: -9;  
+            }
+            
+            body {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+            }
+            
+            .clock {
+                width: 30rem;
+                height: 30rem;
+            }
+            
+            .clock-face {
+                border: 2rem solid white;
+                box-sizing: border-box;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.3),
+                            inset 0 0 0 5px #efefef,
+                            inset 0 0 30px rgba(0, 0, 0, 1);
+                position: relative;
+            }
+            
+            .clock-face:before, .clock-face:after, .delimiter {
+                content: "";
+                position: absolute;
+                height: 100%;
+                width: 10px;
+                background: rgba(0, 0, 0, 1);
+                left: 50%;
+                margin-left: -5px;
+                margin-top: 2.5px;
+                z-index: -3;
+            }
+            
+            .clock-face-inner {
+                position: absolute;
+                height: 88%;
+                width: 88%;
+                left: 6%;
+                top: 6%;
+                background: white;
+                border-radius: 50%;
+                z-index: -2;
+            }
+            
+            .clock-face-inner:after {
+                content: "";
+                background: #018D66 url("01.jpg"); 
+                background-size: cover;
+                opacity: 0.7;
+                border-radius: 50%;
+                box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.7);
+                left: 0;
+                right: 0;
+                bottom: 0;
+                top: 0;
+                position: absolute;
+                z-index: -3;  
+            }
+            
+            .clock-face-inner:before {
+                content: "coolWatch";
+                position: absolute;
+                color: white;
+                text-transform: uppercase;
+                font-size: 1rem;
+                z-index: -2;
+                left: 50%;
+                top: 70%;
+                transform: translateX(-50%);
+            }
+            
+            .delimiter {
+                background: rgba(0, 0, 0, .5);
+                width: 5px;
+            }
+            
+            .clock-face:after {
+                transform: rotate(90deg);
+            }
+            
+            .delimiter.one2seven {
+                transform: rotate(30deg);
+            } 
+            
+            .delimiter.two2eight {
+                transform: rotate(60deg);
+            } 
+            
+            .delimiter.four2ten {
+                transform: rotate(120deg);
+            } 
+            
+            .delimiter.five2eleven {
+                transform: rotate(150deg);
+            } 
+            
+            .hand {
+                width: 50%;
+                height: 5px;
+                background: #00264d;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                transform-origin: 100%;
+                transform: rotate(90deg); 
+                transition: all 0.05s;
+                transition-timing-function: cubic-bezier(0, 2.74, 0.58, 1);
+            }
+            
+            .hour-hand {
+                background: purple;
+                width: 25%;
+                left: 25%;
+                height: 10px;
+            }
+            
+            .minute-hand {
+                background: yellow;
+                width: 40%;
+                left: 10%;
+                height: 8px;
+                transition: all 1s;
+            }
+            
+            .second-hand {
+                background: red;
+                width: 47%;
+                left: 3%;  
+            }
+            
+            .middle {
+                border-radius: 50%;
+                width: 1rem;
+                height: 1rem;
+                background: white;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3),
+                            0 0 0 2px white;
+            }
+            
+            #hour12, #hour3, #hour6, #hour9 {
+                color: white;
+                font-size: 3rem;
+                font-family: calibri;
+                position: absolute;
+                z-index: -2;
+            }  
+            
+            #hour12 {
+                top: 1.5rem;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            #hour3 {
+                right: 2rem;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            #hour6 {
+                bottom: 1.5rem;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            #hour9 {
+                left: 2rem;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        
+        </style>
+    </head>
+
+    <body>
+        <div class="clock">
+            <div class="clock-face">
+                <div class="delimiter one2seven"> </div>
+                <div class="delimiter two2eight"> </div>
+                <div class="delimiter four2ten"> </div>
+                <div class="delimiter five2eleven"> </div>
+                <div class="hand hour-hand"> </div>
+                <div class="hand minute-hand"> </div>
+                <div class="hand second-hand"> </div>
+                <div class="middle"> </div>
+                
+                <div class="clock-face-inner"> </div>
+                <div id="hour12"> 12</div>
+                <div id="hour3"> 3</div>
+                <div id="hour6"> 6</div>
+                <div id="hour9"> 9</div>
+                
+            </div>
+        </div>
+        
+        <script>
+            let secondHand = document.getElementsByClassName('second-hand')[0]; 
+            let minuteHand = document.getElementsByClassName('minute-hand')[0]; 
+            let hourHand = document.getElementsByClassName('hour-hand')[0]; 
+            
+            function getTime() {
+                let date = new Date();
+                let snds = date.getSeconds();
+                let sndsDeg = ((snds / 60) * 360) + 90;
+                secondHand.style.transform = "rotate(" + sndsDeg + "deg)";
+                
+                let mns = date.getMinutes();
+                let mnsDeg = ((mns / 60) * 360) + ((snds / 60) * 6) + 90;
+                minuteHand.style.transform = `rotate(${mnsDeg}deg)`;
+                
+                let h = date.getHours();
+                let hDeg = ((h / 12) * 360) + ((mns / 60) * 30) + 90;
+                hourHand.style.transform = `rotate(${hDeg}deg)`; 
+                
+                //get the twitching out, for when the secs and mins hands reach 12:
+                let hands = document.querySelectorAll('.hand');
+                if (sndsDeg == 90) {
+                    hands.forEach(elem => elem.style.transition = "none");
+                } else {
+                    hands.forEach(elem => elem.style.transition = "");
+                }
+            }
+            
+            setInterval(getTime, 1000); 
+            getTime();
+        </script>
+    </body>
+</html>
