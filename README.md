@@ -9,11 +9,17 @@ It was created using:
 * CSS
 * JavaScript
 
+## Live Demo
+
+Click [here](https://patriciageo3.github.io/JS-clock/)
+
 ## Authors
 
 Patricia Georgescu
 
 ## License & Copyrights
 Image from Unsplash.
+
+## Quick Preview
 
 ![Alt text](Clock.jpg "JS-Clock Preview")
